@@ -3,7 +3,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://your-frontend.vercel.app" // Replace with your actual frontend URL
+  "https://your-frontend.vercel.app", // Replace this with your deployed frontend
 ];
 
 module.exports = async (req, res) => {
@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  // Handle preflight requests
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
