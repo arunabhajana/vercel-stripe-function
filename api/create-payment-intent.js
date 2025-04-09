@@ -1,13 +1,21 @@
 const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://your-frontend.vercel.app" // Replace with your actual frontend URL
+];
+
 module.exports = async (req, res) => {
-  // Set CORS headers for all responses
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173"); // or your frontend URL
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Handle preflight OPTIONS request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
