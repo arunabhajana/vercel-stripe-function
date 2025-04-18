@@ -9,12 +9,10 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(cors());
 app.use(express.json());
 
-// Health check route
 app.get("/", (req, res) => {
   res.send("Stripe payment server is live ✅");
 });
 
-// Payment intent endpoint
 app.post("/create-payment-intent", async (req, res) => {
   try {
     const { amount } = req.body;
@@ -26,8 +24,12 @@ app.post("/create-payment-intent", async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "inr",
+      payment_method_types: [
+        "card", 
+        "upi",  
+      ],
       automatic_payment_methods: {
-        enabled: true,
+        enabled: true, 
       },
     });
 
